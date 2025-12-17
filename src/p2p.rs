@@ -24,7 +24,7 @@ impl P2P {
         let p2p_clone = p2p.clone();
         tokio::spawn(async move {
             loop {
-                let (mut stream, addr) = listener.accept().await.unwrap();
+                let (stream, addr) = listener.accept().await.unwrap();
                 println!("[P2P] New peer connected from {}", addr);
 
                 let mut peers = p2p_clone.peers.lock().await;
@@ -35,7 +35,7 @@ impl P2P {
         let p2p_clone = p2p.clone();
         tokio::spawn(async move {
             loop {
-                if let Ok(mut stream) = TcpStream::connect("127.0.0.1:4000").await {
+                if let Ok(stream) = TcpStream::connect("127.0.0.1:4000").await {
                     println!("[P2P] Connected to peer on port 4001");
                     let mut peers = p2p_clone.peers.lock().await;
                     peers.push(stream);
