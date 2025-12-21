@@ -56,5 +56,10 @@ Full UTXO validation and double-spend protection
 Automatic block and transaction broadcasting
 Simple CLI wallet ✅
 Web-based block explorer
+P2P block broadcasting & gossip ✅
+Block reception & validation ✅
+Chain synchronization ✅
+Retry mechanism on port bind ✅
+Clean codebase✅
 
 Feel free to star ⭐ or fork!
