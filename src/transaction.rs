@@ -38,7 +38,7 @@ impl Transaction {
         hasher.update(self.fee.to_le_bytes());
         hex::encode(hasher.finalize())
     }
-
+    #[allow(dead_code)]
     pub fn sign(&mut self, secret_key: &SecretKey) -> Result<(), Error> {
         let secp = Secp256k1::new();
         let hash_bytes = hex::decode(&self.hash).map_err(|_| Error::InvalidMessage)?;

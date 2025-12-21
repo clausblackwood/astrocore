@@ -5,6 +5,7 @@ use std::sync::{Arc, Mutex};
 use std::collections::{BinaryHeap, HashMap};
 use std::cmp::Ordering;
 
+#[allow(dead_code)]
 #[derive(Clone)]
 struct PrioritizedTx {
     tx: Transaction,
@@ -31,6 +32,7 @@ impl PartialEq for PrioritizedTx {
     }
 }
 
+#[allow(dead_code)]
 pub struct DagBlockchain {
     pub blocks: Vec<Block>,
     pub tips: Vec<String>,
@@ -73,7 +75,7 @@ impl DagBlockchain {
             utxo_set: Arc::new(Mutex::new(utxo_set)),
         }
     }
-
+    #[allow(dead_code)]
     pub fn submit_transaction(&self, tx: Transaction) {
         let prioritized = PrioritizedTx {
             tx: tx.clone(),
@@ -84,7 +86,7 @@ impl DagBlockchain {
         mempool.push(prioritized);
         println!("[Mempool] Added tx {} (fee: {})", tx.hash, tx.fee);
     }
-
+    #[allow(dead_code)]
     pub fn mine_parallel_blocks(&mut self, num_blocks: usize, max_tx_per_block: usize) {
         let current_index = self.blocks.len() as u64;
         let current_tips = self.tips.clone();
