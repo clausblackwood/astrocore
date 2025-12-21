@@ -54,7 +54,7 @@ Future Ideas
 
 Full UTXO validation and double-spend protection
 Automatic block and transaction broadcasting
-Simple CLI wallet
+Simple CLI wallet ✅
 Web-based block explorer
 
 Feel free to star ⭐ or fork!
