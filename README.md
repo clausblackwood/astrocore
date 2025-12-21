@@ -1,20 +1,18 @@
-# Astrocore — A Proof-of-Work BlockDAG Blockchain in Rust
+Astrocore — A Proof-of-Work BlockDAG Blockchain in Rust
 
 A from-scratch blockchain implementation inspired by modern high-throughput designs like Kaspa. Built entirely in Rust for performance, safety, and deep learning.
+Features
 
-## Features
+    BlockDAG structure — Multiple parents per block enabling parallel block production (higher TPS than traditional linear chains)
+    Parallel Proof-of-Work mining — Multi-threaded nonce search using rayon
+    Mempool with fee prioritization — Transactions are ordered by fee (higher fee = faster inclusion)
+    Real transactions — UTXO model with ECDSA signatures using secp256k1 (same curve as Bitcoin)
+    Genesis coinbase transaction — 50 million initial supply
+    Simple P2P networking — TCP-based peer discovery and message broadcasting between nodes
+    Zero external frameworks — Pure Rust implementation
 
-- **BlockDAG structure** — Multiple parents per block enabling parallel block production (higher TPS than traditional linear chains)
-- **Parallel Proof-of-Work mining** — Multi-threaded nonce search using `rayon`
-- **Mempool with fee prioritization** — Transactions are ordered by fee (higher fee = faster inclusion)
-- **Real transactions** — UTXO model with ECDSA signatures using `secp256k1` (same curve as Bitcoin)
-- **Genesis coinbase transaction** — 50 million initial supply
-- **Simple P2P networking** — TCP-based peer discovery and message broadcasting between nodes
-- **Zero external frameworks** — Pure Rust implementation
+Quick Start
 
-## Quick Start
-
-```bash
 git clone https://github.com/clausblackwood/astrocore.git
 cd astrocore
 cargo run --release

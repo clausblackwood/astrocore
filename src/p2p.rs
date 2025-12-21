@@ -15,7 +15,7 @@ impl P2P {
         }
     }
 
-    pub async fn start(port: u16, bc: Arc<Mutex<DagBlockchain>>) {
+    pub async fn start(port: u16, _bc: Arc<Mutex<DagBlockchain>>) {
         let listener = TcpListener::bind(format!("0.0.0.0:{}", port)).await.unwrap();
         println!("[P2P] Listening on port {}", port);
 
