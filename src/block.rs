@@ -2,8 +2,6 @@ use serde::{Serialize, Deserialize};
 use sha2::{Sha256, Digest};
 use chrono::Utc;
 use std::fmt;
-use hex;
-use serde_json;
 use crate::transaction::Transaction;
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
@@ -33,37 +31,43 @@ impl Block {
     pub fn calculate_hash(&self) -> String {
         let mut hasher = Sha256::new();
 
-        let parents_str = serde_json::to_string(&self.parents).unwrap_or("[]".to_string());
-        let transactions_str = serde_json::to_string(&self.transactions).unwrap_or("[]".to_string());
+        hasher.update(self.index.to_le_bytes());
+        hasher.update(self.timestamp.to_le_bytes());
+        hasher.update(self.nonce.to_le_bytes());
 
-        hasher.update(format!(
-            "{}{}{}{}{}",
-            self.index,
-            self.timestamp,
-            transactions_str,
-            parents_str,
-            self.nonce
-        ));
+        let mut sorted_parents = self.parents.clone();
+        sorted_parents.sort();
+        for parent_hash in sorted_parents {
+            hasher.update(hex::decode(parent_hash).unwrap_or_default());
+        }
+
+        for tx in &self.transactions {
+            hasher.update(hex::decode(&tx.hash).unwrap_or_default());
+        }
 
         hex::encode(hasher.finalize())
     }
 
     pub fn mine(&mut self, difficulty: u32) {
         let target = "0".repeat(difficulty as usize);
+
         while !self.hash.starts_with(&target) {
             self.nonce += 1;
             self.hash = self.calculate_hash();
         }
+        
+        println!("[Miner] Block mined! Hash: {}", self.hash);
     }
 }
 
 impl fmt::Display for Block {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        let short_hash = if self.hash.len() > 8 { &self.hash[..8] } else { "n/a" };
         write!(
             f,
-            "Block {} [hash: {}... nonce: {} parents: {} txs: {}]",
+            "Block #{} [Hash: {}... Nonce: {} Parents: {} Txs: {}]",
             self.index,
-            &self.hash[..8],
+            short_hash,
             self.nonce,
             self.parents.len(),
             self.transactions.len()
