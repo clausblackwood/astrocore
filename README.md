@@ -1,65 +1,63 @@
-# Astrocore — A Proof-of-Work BlockDAG Blockchain in Rust
+# 🚀 AstroCore
 
-A from-scratch blockchain implementation inspired by modern high-throughput designs like Kaspa. Built entirely in Rust for performance, safety, and deep learning.
+AstroCore is a high-performance, decentralized DAG-based blockchain prototype written in **Rust**. It features parallel mining, a UTXO transaction model, and an asynchronous P2P networking layer.
 
-## Features
+Built for the next generation of distributed systems, AstroCore utilizes a Directed Acyclic Graph (DAG) structure, allowing multiple blocks to be mined and linked simultaneously, overcoming the bottlenecks of traditional linear chains.
 
-- **BlockDAG structure** — Multiple parents per block enabling parallel block production (higher TPS than traditional linear chains)
-- **Parallel Proof-of-Work mining** — Multi-threaded nonce search using `rayon`
-- **Mempool with fee prioritization** — Transactions are ordered by fee (higher fee = faster inclusion)
-- **Real transactions** — UTXO model with ECDSA signatures using `secp256k1` (same curve as Bitcoin)
-- **Genesis coinbase transaction** — 50 million initial supply
-- **Simple P2P networking** — TCP-based peer discovery and message broadcasting between nodes
-- **Zero external frameworks** — Pure Rust implementation
+## ✨ Key Features
 
-## Quick Start
+- **DAG Architecture**: Supports multiple parent blocks, enabling better scalability and network throughput.
+- **Parallel Mining**: Leverages multi-core processing using `Rayon` for efficient Proof-of-Work (PoW).
+- **Asynchronous Networking**: Powered by `Tokio` for handling multiple P2P connections concurrently with robust TCP framing.
+- **UTXO Model**: Bitcoin-style Unspent Transaction Output model for reliable balance tracking and double-spend protection.
+- **Strong Cryptography**: Uses `secp256k1` for ECDSA digital signatures and `SHA-256` for deterministic hashing.
+- **Prioritized Mempool**: A fee-based priority queue (Max-Heap) to ensure high-value transactions are processed first.
 
+## 🛠 Tech Stack
+
+| Component | Technology |
+| :--- | :--- |
+| **Runtime** | [Tokio](https://tokio.rs/) (Async I/O) |
+| **Parallelism** | [Rayon](https://github.com/rayon-rs/rayon) |
+| **Crypto** | [secp256k1](https://github.com/rust-bitcoin/rust-secp256k1) |
+| **Serialization** | [Serde](https://serde.rs/) / JSON |
+| **CLI** | [Clap](https://docs.rs/clap/latest/clap/) |
+
+## 🚀 Getting Started
+
+### Prerequisites
+- [Rust](https://www.rust-lang.org/tools/install) (Edition 2024 recommended)
+- Cargo (Rust package manager)
+
+### Installation
 ```bash
-git clone https://github.com/clausblackwood/astrocore.git
+git clone [https://github.com/clausblackwood/astrocore.git](https://github.com/clausblackwood/astrocore.git)
 cd astrocore
-cargo run --release
+cargo build --release
 
-The node will:
+💻 Usage
+1. Create a Wallet
 
-Generate wallet addresses
-Create and sign transactions spending the genesis output
-Mine blocks in parallel
-Start a P2P listener on port 4000
+Generate your cryptographic identity (Public Address and Secret Key).
+Bash
 
-To run a second node and see peer connection:
+cargo run -- create-wallet
 
-Change the listening port to 4001 and connection target to 127.0.0.1:4000 in src/p2p.rs
-Run another instance in a separate terminal
+2. Start a Node
 
-You will see peer discovery and periodic broadcast messages.
-Tech Stack
+Launch a node and start participating in the network.
+Bash
 
-Rust — Core language
-tokio — Async runtime for networking
-rayon — Parallel mining
-secp256k1 — Cryptographic signatures
-sha2 — Hashing
-serde — Serialization
+# Start the seed node
+cargo run -- start-node --port 4000 --difficulty 3
 
-Why I Built This
-This project was created to deeply understand low-level blockchain mechanics:
+3. Connect more nodes
 
-Consensus in a DAG
-Transaction validation and mempool management
-Parallelism in Proof-of-Work
-Basic peer-to-peer networking
+Start another instance on a different port. It will automatically attempt to connect to the seed peer.
+Bash
 
-All code written from scratch in December 2025.
-Future Ideas
+cargo run -- start-node --port 4001 --difficulty 3
 
-Full UTXO validation and double-spend protection
-Automatic block and transaction broadcasting
-Simple CLI wallet ✅
-Web-based block explorer
-P2P block broadcasting & gossip ✅
-Block reception & validation ✅
-Chain synchronization ✅
-Retry mechanism on port bind ✅
-Clean codebase✅
+🏗 Architecture
 
-Feel free to star ⭐ or fork!
+AstroCore moves away from the "one block at a time" constraint. Each block in our DAG references multiple previous block hashes (parents), allowing the network to heal and converge even during high latency or parallel mining events.
